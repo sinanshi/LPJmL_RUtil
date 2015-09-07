@@ -1,9 +1,14 @@
 HEADER_SIZE<-43
 
+#' Read header of LPJ inputs in clm. The current header layout is 43 bytes, with name, version, 
+#' order, firstyear, nyears, firstcell, ncells, scalar. Return data in data.frame. 
+#' @param filename this input file name, with full path
+#' @return data.frame header
+#' @examples 
+#' header <- read.input.header("cru_temp.clm")
 read.input.header<-function(filename){
     file.in<-file(filename,"rb")
 
-    # seek(file.in,7, origin = "start")
     name<-readChar(file.in,nchar=7)
     version<-readBin(file.in,integer(),n=1,size=4)
     order<-readBin(file.in,integer(),n=1,size=4)
@@ -20,6 +25,10 @@ read.input.header<-function(filename){
 
 }
 
+#' Read input grid (clm), return global values lon, lat, EAST, SOUTH, WEST, NORTH, RES, NC, int_lon, ind_lat ...
+#' @param path.in file location of grid.bin
+#' @return lon vector longitiute
+#' @return lat vector latitide
 read.input.grid<-function(path.in){
     input.list<-dir(path.in)
     grid.name<-paste(path.in,input.list[grep("grid",input.list)],sep="")
@@ -48,6 +57,7 @@ read.input.grid<-function(path.in){
 }
 
 
+
 # a different layout comparing with read.input.files() 
 # this layout enables as.vector(inputs)
 read.input.files<-function(filename,data.size){
@@ -69,8 +79,15 @@ read.input.files<-function(filename,data.size){
 
 
 
-
-read.input.yearband<-function(filename,data.size,year,band){#year,band, start from 1 
+#' Read one year and one band of LPJ clm data, and return a vector of the select year and band.
+#' @param filename input file path
+#' @param data.size data size of input data, generally equal to 2.
+#' @param year absolute value of select year, e.g. 1900
+#' @param band band
+#' @return vector of npix
+#' @examples 
+#'  read.input.yearband("temp.clm", 1983, 1, 2)
+read.input.yearband<-function(filename,year,band, data.size){#year,band, start from 1 
     fileHeader<-read.input.header(filename)
     data.year<-year-fileHeader$firstyear+1
     file.in <- file(sprintf(filename),"rb")
@@ -84,6 +101,10 @@ read.input.yearband<-function(filename,data.size,year,band){#year,band, start fr
     return(data.in)
 }
 
+#' convert degree of latitue [deg] to area [Ha]
+#' @param lat latitue
+#' @param res resolution
+#' @return area in Ha 
 deg2area<-function(lat,res=0.5){
     deg2rad <- function(deg){
         return (deg*pi*0.00555555555555)

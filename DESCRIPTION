@@ -1,6 +1,6 @@
 Package: lpjutil
 Type: Package
-Title: What the package does (short line)
+Title: Data manipulation tools for LPJmL.
 Version: 1.0
 Date: 2015-03-23
 Author: Sinan Shi

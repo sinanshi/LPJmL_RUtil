@@ -1,7 +1,6 @@
-#############
-#convert 1 dimentional
-#raw data to a map. raw[NPIX]
-#############
+#' Convert vector data to raster
+#' @param raw_ vector 
+#' @return 2-D array [NR, NC]
 map.build<-function(raw_){
 map<-array(NA, dim=c(NR,NC))
 for(i in 1:length(raw_))
