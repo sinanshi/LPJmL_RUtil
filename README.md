@@ -1,11 +1,9 @@
 # LPJmL_RUtil
-## How to install R package
+## Get start with LPJmL_RUtil
 ```bash
 git clone https://github.com/sinanshi/LPJmL_RUtil
 sudo R CMD install LPJmL_RUtil
 ```
-
-## How to call LPJmL_RUtil
 ```R
 library(lpjrutil)
 ```
