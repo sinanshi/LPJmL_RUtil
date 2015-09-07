@@ -1,9 +1,9 @@
-Package: LPJmL.RUtil
+Package: lpjutil
 Type: Package
 Title: What the package does (short line)
 Version: 1.0
 Date: 2015-03-23
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Sinan Shi
+Maintainer: Sinan Shi <s.shi@ucl.ac.uk>
+Description: input/output data manipulation tools for LPJmL.
+License: GPL-2.0
