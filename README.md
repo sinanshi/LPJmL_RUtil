@@ -5,7 +5,7 @@ git clone https://github.com/sinanshi/LPJmL_RUtil
 sudo R CMD install LPJmL_RUtil
 ```
 ```R
-library(lpjrutil)
+library(lpjutil)
 ```
 ## Notes
 * from comments (Rd) to pdf:
