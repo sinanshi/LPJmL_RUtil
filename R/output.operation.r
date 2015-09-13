@@ -37,7 +37,7 @@ output.operation<-function(outfile, operation,
                                          ncells=outfile[["ncells"]],
                                          nyears=outfile[["nyears"]],
                                          nbands=outfile[["nbands"]])
-            writeBin(data,file_out,outfile[["data.size"]])
+            writeBin(data,file_out,size=4)
         }
     }
     close(file_out)
