@@ -45,5 +45,5 @@ output.operation<-function(outfile, operation,
                                   nbands=outfile[["nbands"]])
         }
     }
-    if(VERBOSE)  cat("[done]")
+    if(VERBOSE)  cat("[done]\n")
 }

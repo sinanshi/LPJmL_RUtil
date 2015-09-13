@@ -1,5 +1,3 @@
-library(ncdf)
-
 #' create an empty ncdf file with single variable. 
 #' @param lpjgrid: the path of LPJ grid
 #' @param var_name: variable name
