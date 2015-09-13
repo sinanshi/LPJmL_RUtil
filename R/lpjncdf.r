@@ -50,6 +50,7 @@ put.lpjvar.ncdf <- function(nc, varid, lpj_raster, start, count){
                  vals = as.vector(lpj_raster),
                  start = c(1, 1, start),
                  count = c(xdim, ydim, count))
+    cat(start,"|")
 
 }
 #' convert any lpjoutput to ncdf
@@ -57,8 +58,10 @@ put.lpjvar.ncdf <- function(nc, varid, lpj_raster, start, count){
 lpjoutput2ncdf <- function(lpjoutput)
 {
     stopifnot(length(lpjoutput[["var_name"]]) == lpjoutput[["nbands"]]||lpjoutput[["nbands"]]==12)
-    if(length(lpjoutput[["var_name"]]))
+    if(length(lpjoutput[["var_name"]])>1)
         IS_MULTI_VAR <- TRUE
+    else
+        IS_MULTI_VAR <- FALSE
     nc_single_var <- 
         new.var.ncdf(lpjoutput[["ncfile"]],
                      lpjoutput[["lpjgrid"]],
