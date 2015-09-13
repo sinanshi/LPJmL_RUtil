@@ -29,7 +29,7 @@ output.operation<-function(outfile, operation,
     for(i in 1:outfile[["nyears"]]){
         for(j in 1:outfile[["nbands"]]){
             data <- read.output.yearband(outfile[["path"]], 
-                                         year=i,
+                                         year=outfile[["start_year"]] + i - 1,
                                          band=j,
                                          start_year=outfile[["start_year"]],
                                          ncells=outfile[["ncells"]],
@@ -37,7 +37,7 @@ output.operation<-function(outfile, operation,
                                          nbands=outfile[["nbands"]])
             data <- operation(data)
             write.output.yearband(newfile, data, 
-                                  year=i,
+                                  year=outfile[["start_year"]] + i - 1,
                                   band=j,
                                   start_year=outfile[["start_year"]],
                                   ncells=outfile[["ncells"]],
