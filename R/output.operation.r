@@ -25,7 +25,7 @@
 output.operation<-function(outfile, operation, 
                            newfile=paste(outfile[["path"]],"_new",sep=""),
                            VERBOSE=FALSE){
-    if(VERBOSE)   cat("Doing operations", output[["path"]], "\t...")
+    if(VERBOSE)   cat("Doing operations", outfile[["path"]], "\t...")
     for(i in 1:outfile[["nyears"]]){
         for(j in 1:outfile[["nbands"]]){
             data <- read.output.yearband(outfile[["path"]], 

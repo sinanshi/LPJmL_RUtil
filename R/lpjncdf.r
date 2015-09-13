@@ -74,7 +74,7 @@ lpjoutput2ncdf <- function(lpjoutput)
     read.input.grid(lpjoutput[["lpjgrid"]])
     end_year <- lpjoutput[["start_year"]] + lpjoutput[["nyears"]] - 1
     count_ncdf_band <- 1
-
+    pb <- txtProgressBar(min = 0, max = lpjoutput[["nyears"]],style = 3)
     for(this_year in lpjoutput[["start_year"]]:end_year){
         for(this_band in 1:lpjoutput[["nbands"]]){
             this_data <- read.output.yearband(lpjoutput[["filename"]], 
@@ -83,22 +83,16 @@ lpjoutput2ncdf <- function(lpjoutput)
                                               lpjoutput[["nyears"]], lpjoutput[["nbands"]])
             this_map <- map.build(this_data)
             if(IS_MULTI_VAR)
-                put.lpjvar.ncdf(nc_single_var, 
-                                lpjoutput[["var_name"]][this_band], 
-                                this_map, start = count_ncdf_band, count = 1)
+                put.lpjvar.ncdf(nc_single_var, lpjoutput[["var_name"]][this_band], this_map, start = count_ncdf_band, count = 1)
             else{
-                put.lpjvar.ncdf(nc_single_var, lpjoutput[["var_name"]], 
-                                this_map, start = count_ncdf_band, count = 1)
+                put.lpjvar.ncdf(nc_single_var, lpjoutput[["var_name"]], this_map, start = count_ncdf_band, count = 1)
                 count_ncdf_band <- count_ncdf_band + 1
             }
-            if(IS_MULTI_VAR)
-                count_ncdf_band <- count_ncdf_band + 1
-            cat("\b\b\b\b\b\b\b\b\b\b\b\b\b",
-                ((this_year + 1 -lpjoutput[["start_year"]])/lpjoutput[["nyears"]])*100,
-                "%",sep="")
         }
+        if(IS_MULTI_VAR)
+            count_ncdf_band <- count_ncdf_band + 1
+        setTxtProgressBar(pb,(this_year + 1 -lpjoutput[["start_year"]]))
     }
+    close(pb)
     close.ncdf(nc_single_var[["nc"]])
 }
-
-
