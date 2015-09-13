@@ -26,6 +26,8 @@ output.operation<-function(outfile, operation,
                            newfile=paste(outfile[["path"]],"_new",sep=""),
                            VERBOSE=FALSE){
     if(VERBOSE)   cat("Doing operations", outfile[["path"]], "\t...")
+    file_out <- file(sprintf(newfile),"wb")
+
     for(i in 1:outfile[["nyears"]]){
         for(j in 1:outfile[["nbands"]]){
             data <- read.output.yearband(outfile[["path"]], 
@@ -35,15 +37,9 @@ output.operation<-function(outfile, operation,
                                          ncells=outfile[["ncells"]],
                                          nyears=outfile[["nyears"]],
                                          nbands=outfile[["nbands"]])
-            data <- operation(data)
-            write.output.yearband(newfile, data, 
-                                  year=outfile[["start_year"]] + i - 1,
-                                  band=j,
-                                  start_year=outfile[["start_year"]],
-                                  ncells=outfile[["ncells"]],
-                                  nyears=outfile[["nyears"]],
-                                  nbands=outfile[["nbands"]])
+            writeBin(data,file_out,outfile[["data.size"]])
         }
     }
+    close(file_out)
     if(VERBOSE)  cat("[done]\n")
 }
