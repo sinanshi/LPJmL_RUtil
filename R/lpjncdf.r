@@ -50,8 +50,6 @@ put.lpjvar.ncdf <- function(nc, varid, lpj_raster, start, count){
                  vals = as.vector(lpj_raster),
                  start = c(1, 1, start),
                  count = c(xdim, ydim, count))
-    cat(start,"|")
-
 }
 #' convert any lpjoutput to ncdf
 #' @param lpjoutput: list
