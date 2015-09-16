@@ -62,7 +62,9 @@ read.input.grid<-function(path.in){
 # this layout enables as.vector(inputs)
 read.input.files<-function(filename,data.size){
     cat("reading LPJ input:",filename,"\n")
+
     fileHeader<-read.input.header(filename)
+    pb <- txtProgressBar(min = 0, max = fileHeader$nyears,style = 3)
     file.in <- file(sprintf(filename),"rb")
     data.in<-array(NA,dim=c(fileHeader$nbands,fileHeader$ncells,fileHeader$nyears))
     seek(file.in,where=HEADER_SIZE,origin="start")
@@ -70,9 +72,8 @@ read.input.files<-function(filename,data.size){
         for(j in 1:fileHeader$ncells){
             data.in[,j,i]<-readBin(file.in, integer(), n=fileHeader$nbands, size=data.size)*fileHeader$scalar
         }
-        cat("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b",round(i/fileHeader$nyears*100),"%")
+        setTxtProgressBar(pb, i)
     }
-    cat("...[done]\n")
     close(file.in)
     return(data.in)
 }
