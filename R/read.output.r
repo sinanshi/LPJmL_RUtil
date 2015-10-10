@@ -1,4 +1,5 @@
-#' read data of a selected band and year of LPJ binary output.
+#' read data of a selected band and year of LPJ binary output. 
+#' (need to be checked, maybe it doesn't work)
 #' @param filename output file name
 #' @param year select year
 #' @param band select band
@@ -44,3 +45,21 @@ read.output.file <- function(outlist){
     return(data)
 }
 
+
+
+
+#' read output grid and return global variable lon, lat, and index. 
+#' @param path output path.
+#' @param ncells ncells.
+read.output.grid<-function (path, file, ncells)
+{
+    grid.name <- paste(path, file, sep="")
+    gridfile <- file(grid.name, "rb")
+    data <- array(NA, dim=2*ncells)
+    data <- readBin(gridfile, integer(), n=2*ncells, size=2) / 100
+    lon <<- data[c(1:ncells)*2-1]
+    lat <<- data[c(1:ncells)*2]
+    ind_lon <<- ceiling(lon*2-min(lon)*2+1)
+    ind_lat <<- ceiling(lat*2-min(lat)*2+1)
+    close(gridfile)
+}
