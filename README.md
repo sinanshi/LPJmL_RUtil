@@ -8,7 +8,9 @@ sudo R CMD install LPJmL_RUtil
 library(lpjutil)
 ```
 ## Notes
-* from comments (Rd) to pdf:
+* How to generate documentation
  ```
-R CMD Rd2pdf LPJmL_RUtil
+ library(roxygen2)
+ roxygenize("LPJmL_RUtil/")
+ R CMD Rd2pdf LPJmL_RUtil
 ```
