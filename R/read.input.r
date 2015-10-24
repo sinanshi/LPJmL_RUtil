@@ -88,7 +88,7 @@ read.input.files<-function(filename,data.size){
 #' @return vector of npix
 #' @examples 
 #'  read.input.yearband("temp.clm", 1983, 1, 2)
-read.input.yearband<-function(filename,year,band, data.size){#year,band, start from 1 
+read.input.year.one.band<-function(filename,year,band, data.size){#year,band, start from 1 
     fileHeader<-read.input.header(filename)
     data.year<-year-fileHeader$firstyear+1
     file.in <- file(sprintf(filename),"rb")
@@ -101,6 +101,30 @@ read.input.yearband<-function(filename,year,band, data.size){#year,band, start f
     close(file.in)
     return(data.in)
 }
+
+#' Read one year and all bands of LPJ clm data, and return an ncells by nbands
+#' array. 
+#' @param filename input file path
+#' @param data.size data size of input data, generally equal to 2.
+#' @param year absolute value of select year, e.g. 1900
+#' @param bands a vector of selected bands, if not specified read all bands. 
+#' @return vector of $ncells \times bands$
+#' @examples 
+#'  read.input.yearband("temp.clm", 1983, 1, 2)
+read.input.yearbands<-function(filename, year, bands=NULL, data.size){
+    fileHeader<-read.input.header(filename)
+    if(is.null(bands))
+        data<-array(NA, c(fileHeader$ncells, fileHeader$nbands))
+    else
+        data<-array(NA, c(fileHeader$ncells, length(bands)))
+
+    for(i in 1:length(bands))
+        data[, i]<-read.input.year.one.band(filename, year, bands[i],
+                                            data.size=data.size)
+
+    return(data)
+}
+
 
 #' convert degree of latitue [deg] to area [Ha]
 #' @param lat latitue

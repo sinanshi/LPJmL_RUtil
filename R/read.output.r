@@ -33,19 +33,37 @@ read.output.file <- function(outlist){
     for(year in 1:nyears){
         for(band in 1:nbands){
             data[year, band, ]<-read.output.yearband(outlist[["path"]],
-                                                   year = year,
-                                                   band = band,
-                                                   start_year = outlist[["start_year"]],
-                                                   ncells = outlist[["ncells"]],
-                                                   nyears = outlist[["nyears"]],
-                                                   nbands = outlist[["nbands"]],
-                                                   data.size = outlist[["data.size"]])
+                                                     year = year,
+                                                     band = band,
+                                                     start_year = outlist[["start_year"]],
+                                                     ncells = outlist[["ncells"]],
+                                                     nyears = outlist[["nyears"]],
+                                                     nbands = outlist[["nbands"]],
+                                                     data.size = outlist[["data.size"]])
         }
     }
     return(data)
 }
 
-
+#' read output by given a year block
+#' @param syear start year of the year block
+#' @param lyear end year of the year block
+read.output.yearblock<- function(filename, syear, lyear, start_year,
+                                 ncells, nyears, nbands, data.size = 4)
+{
+    ind_year <- syear - start_year
+    file_out <- file(sprintf(filename),"rb")
+    pos_start <- data.size * (ind_year * nbands * ncells)
+    seek(file_out, where = pos_start, origin = "start")
+    data<-array(0,dim=c((lyear-syear+1),nbands,ncells))
+    for(i in 1:(lyear-syear+1)){
+        for(j in 1:nbands){
+            data[i,j,]<-readBin(file_out, numeric(), n = ncells, size = data.size)
+        }
+    }
+    close(file_out)
+    return(data)
+}
 
 
 #' read output grid and return global variable lon, lat, and index. 
