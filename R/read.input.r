@@ -88,7 +88,7 @@ read.input.files<-function(filename,data.size){
 #' @return vector of npix
 #' @examples 
 #'  read.input.yearband("temp.clm", 1983, 1, 2)
-read.input.year.one.band<-function(filename,year,band, data.size){#year,band, start from 1 
+read.input.yearband<-function(filename,year,band, data.size){#year,band, start from 1 
     fileHeader<-read.input.header(filename)
     data.year<-year-fileHeader$firstyear+1
     file.in <- file(sprintf(filename),"rb")
@@ -119,7 +119,7 @@ read.input.yearbands<-function(filename, year, bands=NULL, data.size){
         data<-array(NA, c(fileHeader$ncells, length(bands)))
 
     for(i in 1:length(bands))
-        data[, i]<-read.input.year.one.band(filename, year, bands[i],
+        data[, i]<-read.input.yearband(filename, year, bands[i],
                                             data.size=data.size)
 
     return(data)
