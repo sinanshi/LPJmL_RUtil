@@ -1,5 +1,6 @@
-#' 
-#' @param 
+#' Aggregate the global average of selected years and bands
+#' @param year absolute values of years, e.g. c(1901:2000)
+#' @param bands e.g. c(1:12)
 input.global.mean <- function(filename, years=NULL, bands=NULL){
     header <- read.input.header(filename)
 

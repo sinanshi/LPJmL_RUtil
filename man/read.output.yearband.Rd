@@ -2,7 +2,8 @@
 % Please edit documentation in R/read.output.r
 \name{read.output.yearband}
 \alias{read.output.yearband}
-\title{read data of a selected band and year of LPJ binary output.}
+\title{read data of a selected band and year of LPJ binary output.
+(need to be checked, maybe it doesn't work)}
 \usage{
 read.output.yearband(filename, year, band, start_year, ncells, nyears, nbands,
   data.size = 4)
@@ -29,6 +30,7 @@ data in vector with ncells elements
 }
 \description{
 read data of a selected band and year of LPJ binary output.
+(need to be checked, maybe it doesn't work)
 }
 \examples{
 data<-read.output.yearband("mnpp.bin", year=1982, band=2,
