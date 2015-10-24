@@ -60,7 +60,7 @@ read.input.grid<-function(path.in){
 
 # a different layout comparing with read.input.files() 
 # this layout enables as.vector(inputs)
-read.input.files<-function(filename,data.size){
+read.input.files<-function(filename, data.size, with.scalar=TRUE){
     cat("reading LPJ input:",filename,"\n")
 
     fileHeader<-read.input.header(filename)
@@ -70,7 +70,8 @@ read.input.files<-function(filename,data.size){
     seek(file.in,where=HEADER_SIZE,origin="start")
     for(i in 1:fileHeader$nyears){
         for(j in 1:fileHeader$ncells){
-            data.in[,j,i]<-readBin(file.in, integer(), n=fileHeader$nbands, size=data.size)*fileHeader$scalar
+            data.in[,j,i]<-readBin(file.in, integer(), n=fileHeader$nbands, size=data.size)
+            if(with.scalar) data.in[, j, i] <- data.in[, j, i] * fileHeader$scalar
         }
         setTxtProgressBar(pb, i)
     }
@@ -88,14 +89,15 @@ read.input.files<-function(filename,data.size){
 #' @return vector of npix
 #' @examples 
 #'  read.input.yearband("temp.clm", 1983, 1, 2)
-read.input.yearband<-function(filename,year,band, data.size){#year,band, start from 1 
+read.input.yearband<-function(filename,year,band, data.size, with.scalar=TRUE){#year,band, start from 1 
     fileHeader<-read.input.header(filename)
     data.year<-year-fileHeader$firstyear+1
     file.in <- file(sprintf(filename),"rb")
     data.in<-array(NA,dim=c(fileHeader$ncells))
     seek(file.in,where=HEADER_SIZE+data.size*((data.year-1)*fileHeader$nband*fileHeader$ncells+(band-1)),origin="start")
     for(i in 1:fileHeader$ncells){
-        data.in[i]<-readBin(file.in, integer(), n=1, size=data.size)*fileHeader$scalar
+        data.in[i]<-readBin(file.in, integer(), n=1, size=data.size)
+        if(with.scalar) data.in[i] <- data.in[i]*fileHeader$scalar
         seek(file.in,where=(fileHeader$nbands-1)*2,origin="current")
     }
     close(file.in)
@@ -108,7 +110,7 @@ read.input.yearband<-function(filename,year,band, data.size){#year,band, start f
 #' @param data.size data size of input data, generally equal to 2.
 #' @param year absolute value of select year, e.g. 1900
 #' @param bands a vector of selected bands, if not specified read all bands. 
-#' @return vector of $ncells \times bands$
+#' @return vector of $ncells * bands$
 #' @examples 
 #'  read.input.yearband("temp.clm", 1983, 1, 2)
 read.input.yearbands<-function(filename, year, bands=NULL, data.size){
@@ -126,28 +128,4 @@ read.input.yearbands<-function(filename, year, bands=NULL, data.size){
 }
 
 
-#' convert degree of latitue [deg] to area [Ha]
-#' @param lat latitue
-#' @param res resolution
-#' @return area in Ha 
-deg2area_ha<-function(lat,res=0.5){
-    deg2rad <- function(deg){
-        return (deg*pi*0.00555555555555)
-    }
-    area<-(111e3*res)*(111e3*res)*cos(deg2rad(lat))/10000#ha
-    return(area)
-}
-
-
-#' convert degree of latitue [deg] to area [m^2]
-#' @param lat latitue
-#' @param res resolution
-#' @return area in Ha 
-deg2area_m2<-function(lat,res=0.5){
-    deg2rad <- function(deg){
-        return (deg*pi*0.00555555555555)
-    }
-    area<-(111e3*res)*(111e3*res)*cos(deg2rad(lat))
-    return(area)
-}
 
