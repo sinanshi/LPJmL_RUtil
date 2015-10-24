@@ -17,7 +17,7 @@ read.input.yearbands(filename, year, bands = NULL, data.size)
 \item{data.size}{data size of input data, generally equal to 2.}
 }
 \value{
-vector of $ncells \times bands$
+vector of $ncells * bands$
 }
 \description{
 Read one year and all bands of LPJ clm data, and return an ncells by nbands
